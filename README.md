@@ -1,41 +1,84 @@
-# 🎥 YouTube Transcript Question-Answering System (RAG with LangChain + Azure OpenAI)
+# 🎥 YouTube Chat Assistant
 
-This project implements a **Retrieval-Augmented Generation (RAG) pipeline** that enables users to ask natural language questions about a YouTube video, and receive **context-aware answers** derived directly from the transcript.  
+A powerful AI-powered application that allows you to chat with any YouTube video using RAG (Retrieval-Augmented Generation) technology. Ask questions about video content and get intelligent answers based on the video's transcript.
 
-The system combines **YouTube Transcript API**, **LangChain**, **Azure OpenAI embeddings + LLMs**, and **FAISS vector store** for efficient transcript retrieval and response generation.  
+## ✨ Features
 
----
+- 🎬 **Chat with YouTube Videos**: Ask questions about any YouTube video with English subtitles
+- 💬 **Conversational AI**: Maintains context across multiple questions
+- 🔄 **Multi-Session Support**: Switch between different video conversations
+- 📱 **Clean Web Interface**: Easy-to-use Streamlit frontend
+- 🚀 **Fast API Backend**: RESTful API for scalability
+- 💾 **Session Management**: Persistent chat history for each video
+- 🔍 **Smart Retrieval**: Uses vector similarity search for relevant context
 
-## 🚀 Features
-- Extracts transcripts from YouTube videos using **YouTube Transcript API**  
-- Splits long transcripts into **semantic chunks** with LangChain  
-- Creates **vector embeddings** using Azure OpenAI  
-- Stores embeddings in **FAISS vector database** for efficient retrieval  
-- Uses **AzureChatOpenAI** (LLMs) for context-aware question answering  
-- End-to-end **RAG pipeline** for querying YouTube video content  
+## 🏗️ Architecture
 
----
-
-## 🛠️ Tech Stack
-- **Python 3.9+**  
-- **LangChain** (Text splitters, prompts, RAG orchestration)  
-- **Azure OpenAI** (Embeddings + Chat Models)  
-- **FAISS** (Vector database for retrieval)  
-- **YouTube Transcript API** (Transcript ingestion)  
-
----
-
-## 💡 Usage
-1. Provide a YouTube `video_id` in the notebook.  
-2. The pipeline will:
-   - Fetch the transcript  
-   - Split text into chunks  
-   - Generate embeddings and store them in FAISS  
-   - Allow natural language Q&A over the video  
-
-Example:
-```python
-Q: "What is the main topic of this video?"
-A: "The video discusses farmers preparing soil and planting seeds..."
+```
+┌─────────────────┐    HTTP/REST    ┌──────────────────┐
+│                 │ ◄──────────────► │                  │
+│  Streamlit UI   │                  │   FastAPI Server │
+│                 │                  │                  │
+└─────────────────┘                  └──────────────────┘
+                                              │
+                                              ▼
+                                     ┌──────────────────┐
+                                     │   RAG Pipeline   │
+                                     │                  │
+                                     │ • YouTube API    │
+                                     │ • Text Splitter  │
+                                     │ • Embeddings     │
+                                     │ • Vector Store   │
+                                     │ • LLM Chain      │
+                                     │ • Memory         │
+                                     └──────────────────┘
 ```
 
+## 🛠️ Technology Stack
+
+### Backend
+- **FastAPI** - High-performance web framework
+- **LangChain** - LLM application framework
+- **Azure OpenAI** - GPT models and embeddings
+- **FAISS** - Vector similarity search
+- **YouTube Transcript API** - Extract video transcripts
+
+### Frontend
+- **Streamlit** - Interactive web application
+- **Requests** - HTTP client for API communication
+
+## 📖 Usage
+
+### Getting Started
+
+1. **Enter YouTube URL**: Paste any YouTube video URL in the sidebar
+2. **Create Session**: Click "Start New Session" to process the video
+3. **Start Chatting**: Ask questions about the video content
+4. **Switch Sessions**: Use the dropdown to switch between different videos
+
+### Example Questions
+
+- "What is the main topic of this video?"
+- "Can you summarize the key points?"
+- "What did the speaker say about [specific topic]?"
+- "How does this relate to what we discussed earlier?"
+- "Can you elaborate on the first point?"
+
+### Session Management
+
+- **Create Multiple Sessions**: Chat with different videos simultaneously
+- **Switch Between Sessions**: Use the session dropdown to navigate
+- **Persistent History**: Each session maintains its own chat history
+- **Delete Sessions**: Remove sessions when no longer needed
+
+## 🔧 API Endpoints
+
+### Core Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/` | API status and health check |
+| `POST` | `/create-session` | Create new video session |
+| `POST` | `/ask` | Ask question in session |
+| `GET` | `/sessions` | List all active sessions |
+| `DELETE` | `/session/{id}` | Delete session |
